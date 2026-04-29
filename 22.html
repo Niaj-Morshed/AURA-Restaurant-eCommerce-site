@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA | Adaptive Premium Dining</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #05020d;
+            --primary: #ff007a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+        /* --- Floating Navigation --- */
+        nav {
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
+            width: 92%; max-width: 1200px; padding: 12px 25px;
+            background: rgba(10, 5, 26, 0.7); backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: 100px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+        }
+        .logo { font-family: 'Syncopate', sans-serif; font-size: clamp(14px, 4vw, 18px); color: var(--primary); letter-spacing: 3px; }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 60vh; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; text-align: center; padding: 0 20px;
+            background: radial-gradient(circle at center, #1a0b3d 0%, var(--bg) 80%);
+        }
+        .hero h1 { font-family: 'Syncopate', sans-serif; font-size: clamp(2rem, 10vw, 5.5rem); line-height: 1.1; margin-bottom: 10px; }
+        .hero p { opacity: 0.6; letter-spacing: 3px; font-size: clamp(10px, 3vw, 13px); text-transform: uppercase; }
+
+        /* --- Optimized Bento Grid (All Devices) --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+        .bento-grid {
+            display: grid;
+            /* Mobile-e 2 column thakbe jate PC-er moto layout feel hoy */
+            grid-template-columns: repeat(2, 1fr); 
+            grid-auto-rows: 180px; 
+            gap: 12px;
+        }
+
+        /* PC-er jonno Grid layout boro hobe */
+        @media (min-width: 768px) {
+            .bento-grid {
+                grid-template-columns: repeat(4, 1fr);
+                grid-auto-rows: 280px;
+                gap: 20px;
+            }
+        }
+
+        .food-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            transition: 0.4s ease;
+        }
+
+        .food-card img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: 0.6s;
+        }
+
+        /* Responsive Shapes */
+        .tall { grid-row: span 2; }
+        .wide { grid-column: span 2; }
+
+        /* Mobile Hover/Info Effect */
+        .overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 15px; background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            display: flex; flex-direction: column; justify-content: flex-end;
+            height: 50%;
+        }
+        .overlay h3 { font-size: clamp(12px, 3.5vw, 18px); font-weight: 700; }
+        .overlay p { color: var(--primary); font-size: clamp(10px, 3vw, 14px); }
+
+        /* --- Reservation --- */
+        .reserve { padding: 60px 20px; text-align: center; }
+        .reserve-box {
+            max-width: 450px; margin: 0 auto; padding: 35px;
+            background: var(--glass); border-radius: 30px; border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+        .btn-aura {
+            width: 100%; padding: 14px; border-radius: 50px; background: var(--primary);
+            color: white; border: none; font-weight: 800; cursor: pointer;
+            margin-top: 15px; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        footer { padding: 30px; text-align: center; font-size: 10px; opacity: 0.3; letter-spacing: 2px; }
+
+        /* Tablet specific adjustment */
+        @media (max-width: 1024px) and (min-width: 768px) {
+            .bento-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">AURA</div>
+        <div style="font-size: 11px; font-weight: 500;"><i class="fas fa-bolt" style="color: var(--primary);"></i> BOOKING OPEN</div>
+    </nav>
+
+    <header class="hero">
+        <p>Experimental Kitchen</p>
+        <h1>BEYOND <br> TASTE</h1>
+    </header>
+
+    <div class="container">
+        <div class="bento-grid" id="menu-grid">
+            </div>
+    </div>
+
+    <section class="reserve">
+        <div class="reserve-box">
+            <h2 style="font-size: 1.5rem; margin-bottom: 10px;">RESERVE A SPOT</h2>
+            <p style="font-size: 12px; opacity: 0.5;">Experience dining in a new dimension.</p>
+            <button class="btn-aura">Reserve Now</button>
+        </div>
+    </section>
+
+    <footer>&copy; 2026 AURA STUDIO</footer>
+
+    <script>
+        const foods = [
+            { name: "Neon Sushi", price: "$22", type: "wide", img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=600" },
+            { name: "Cyber Steak", price: "$45", type: "tall", img: "https://images.unsplash.com/photo-1546241072-48010ad2862c?q=80&w=600" },
+            { name: "Violet Pasta", price: "$18", type: "normal", img: "https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=600" },
+            { name: "Plasma Drink", price: "$12", type: "normal", img: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600" },
+            { name: "Lava Cake", price: "$15", type: "wide", img: "https://images.unsplash.com/photo-1579954115545-a95591f28bee?q=80&w=600" },
+            { name: "Space Salad", price: "$14", type: "normal", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=600" },
+            { name: "Aura Burger", price: "$20", type: "tall", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=600" },
+            { name: "Crystal Dimsum", price: "$25", type: "normal", img: "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?q=80&w=600" },
+            { name: "Electric Salmon", price: "$32", type: "wide", img: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=600" },
+            { name: "Meta Pizza", price: "$28", type: "normal", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600" }
+        ];
+
+        const grid = document.getElementById('menu-grid');
+
+        foods.forEach(item => {
+            const card = document.createElement('div');
+            card.className = `food-card ${item.type}`;
+            card.innerHTML = `
+                <img src="${item.img}" alt="${item.name}">
+                <div class="overlay">
+                    <h3>${item.name}</h3>
+                    <p>${item.price}</p>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+</html>
